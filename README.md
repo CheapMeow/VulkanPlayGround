@@ -18,3 +18,5 @@ If you run my build bat, sln file will locate in `./build` and you need to copy 
 If you run exe file, you need to copy `shaders` folder to the root dir of exe file. 
 
 If you run my build bat, sln file will locate in `./build/Debug` and you need to copy `shaders` folder to it.
+
+Or if you download my release zip for windows, it has done for you.
