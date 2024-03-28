@@ -13,35 +13,42 @@ set(3RD_PARTY_ROOT_DIR ${PLAYGROUND_ROOT_DIR}/3rdparty)
 
 add_subdirectory(${3RD_PARTY_ROOT_DIR})
 
-add_executable(ERROR1 ${SRC_ROOT_DIR}/error_of_multiview_render_pass.cpp)
+macro(addTestingSample EXE_NAME SRC_FILES HEADER_FILES)
 
-set_target_properties(ERROR1 PROPERTIES CXX_STANDARD 17)
-set_target_properties(ERROR1 PROPERTIES FOLDER "ERROR1")
+    add_executable(${EXE_NAME} ${SRC_FILES} ${HEADER_FILES})
 
-target_compile_definitions(ERROR1
-    PRIVATE
-    VK_USE_PLATFORM_WIN32_KHR # TODO: Config vulkan platform preprocesser according to cmake build platform
-    NOMINMAX # for std::numeric_limits<double>::min() and max()
-    )
+    set_target_properties(${EXE_NAME} PROPERTIES CXX_STANDARD 17)
+    set_target_properties(${EXE_NAME} PROPERTIES FOLDER ${EXE_NAME})
 
-# being a cross-platform target, we enforce standards conformance on MSVC
-target_compile_options(ERROR1 PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
-target_compile_options(ERROR1 PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/WX->")
+    target_compile_definitions(${EXE_NAME}
+        PRIVATE
+        VK_USE_PLATFORM_WIN32_KHR # TODO: Config vulkan platform preprocesser according to cmake build platform
+        NOMINMAX # for std::numeric_limits<double>::min() and max()
+        )
 
-target_include_directories(ERROR1 PUBLIC ${SRC_ROOT_DIR})
+    # being a cross-platform target, we enforce standards conformance on MSVC
+    target_compile_options(${EXE_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
+    target_compile_options(${EXE_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/WX->")
 
-target_link_libraries(ERROR1 PUBLIC glfw)
-target_include_directories(ERROR1 PUBLIC ${3RD_PARTY_ROOT_DIR}/glfw/include)
-target_compile_definitions(ERROR1
-    PUBLIC
-    GLFW_INCLUDE_VULKAN 
-    GLFW_EXPOSE_NATIVE_WIN32)
+    target_include_directories(${EXE_NAME} PUBLIC ${SRC_ROOT_DIR})
 
-if(Vulkan_FOUND)
-    # for vulkan hpp
-    target_include_directories(ERROR1 PUBLIC ${Vulkan_INCLUDE_DIRS})
-    # don't link to vulkan static lib
-endif()
+    target_link_libraries(${EXE_NAME} PUBLIC glfw)
+    target_include_directories(${EXE_NAME} PUBLIC ${3RD_PARTY_ROOT_DIR}/glfw/include)
+    target_compile_definitions(${EXE_NAME}
+        PUBLIC
+        GLFW_INCLUDE_VULKAN 
+        GLFW_EXPOSE_NATIVE_WIN32)
 
-target_link_libraries(ERROR1 PUBLIC imgui)
-target_include_directories(ERROR1 PUBLIC ${3RD_PARTY_ROOT_DIR}/imgui)
+    if(Vulkan_FOUND)
+        # for vulkan hpp
+        target_include_directories(${EXE_NAME} PUBLIC ${Vulkan_INCLUDE_DIRS})
+        # don't link to vulkan static lib
+    endif()
+
+    target_link_libraries(${EXE_NAME} PUBLIC imgui)
+    target_include_directories(${EXE_NAME} PUBLIC ${3RD_PARTY_ROOT_DIR}/imgui)
+
+endmacro()
+
+addTestingSample(ERROR1 ${SRC_ROOT_DIR}/error_of_multiview_render_pass.cpp "")
+addTestingSample(ERROR2 ${SRC_ROOT_DIR}/error_of_queue.cpp "")
