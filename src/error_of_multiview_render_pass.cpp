@@ -666,6 +666,14 @@ private:
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        ImGui::SetNextWindowSize(ImVec2(0, 0), ImGuiCond_FirstUseEver);
+        ImGui::Begin("Test Window");
+
+        ImGui::Text("Test!!!!");
+
+        ImGui::End();
+
         if (show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
 
