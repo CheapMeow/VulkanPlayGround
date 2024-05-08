@@ -1,4 +1,3 @@
-#define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_vulkan.h>
@@ -828,8 +827,9 @@ private:
         init_info.MinImageCount             = MAX_FRAMES_IN_FLIGHT;
         init_info.ImageCount                = MAX_FRAMES_IN_FLIGHT;
         init_info.MSAASamples               = VK_SAMPLE_COUNT_1_BIT;
+        init_info.RenderPass                = renderPass;
 
-        ImGui_ImplVulkan_Init(&init_info, renderPass);
+        ImGui_ImplVulkan_Init(&init_info);
 
         // Upload Fonts
         {
@@ -848,7 +848,7 @@ private:
                 throw std::runtime_error("failed to begin command buffer!");
             }
 
-            ImGui_ImplVulkan_CreateFontsTexture(commandBuffer);
+            ImGui_ImplVulkan_CreateFontsTexture();
 
             VkSubmitInfo end_info       = {};
             end_info.sType              = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -867,7 +867,6 @@ private:
             {
                 throw std::runtime_error("failed to queue submit!");
             }
-            ImGui_ImplVulkan_DestroyFontUploadObjects();
         }
     }
 
