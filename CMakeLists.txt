@@ -50,4 +50,4 @@ macro(addTestingSample EXE_NAME SRC_FILES HEADER_FILES)
 
 endmacro()
 
-addTestingSample(ERROR1 ${SRC_ROOT_DIR}/error_of_multiview_render_pass.cpp "")
+addTestingSample(Test1 ${SRC_ROOT_DIR}/multiview_render_pass.cpp "")

@@ -665,7 +665,7 @@ private:
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        // you doesn't need to set pos = 0 for a floating window
         ImGui::SetNextWindowSize(ImVec2(0, 0), ImGuiCond_FirstUseEver);
         ImGui::Begin("Test Window");
 
